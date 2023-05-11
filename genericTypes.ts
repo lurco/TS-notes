@@ -11,83 +11,83 @@
 // Concept snippet
 //
 
-interface Book {
-    title: string;
-}
-
-class BookShelf {
-    _books: Book[] = [];
-
-    addBookToCatalog(book: Book): void {
-        // logic
-    }
-
-    removeBookFromCatalog(book: Book): Book {
-        // logic
-        return book;
-    }
-
-}
-
-interface Product {
-    name: string;
-}
-
-class ProductShelf {
-    _products: Product[] = [];
-
-    addProductToCatalog(product: Product): void {
-        // logic
-    }
-
-    removeProductFromCatalog(product: Product): Product {
-        // logic
-        return product;
-    }
-}
-
-class BookItem implements Book {
-    title = 'Pan Tadeusz';
-}
-
-class ProductItem implements Product {
-    name = 'cebula';
-}
-
-class Shelf<T> {
-    _items: T[] = [];
-
-    addItemToCatalog(item: T): void {
-        // logic
-    }
-
-    removeItemFromCatalog(item: T): T {
-        // logic
-        return item;
-    }
-}
-
-const bookShelf: Shelf<Book> = new Shelf<Book>();
-const productShelf: Shelf<Product> = new Shelf<Product>();
-
-bookShelf.addItemToCatalog(new BookItem());
-productShelf.addItemToCatalog(new ProductItem());
+// interface Book {
+//     title: string;
+// }
+//
+// class BookShelf {
+//     _books: Book[] = [];
+//
+//     addBookToCatalog(book: Book): void {
+//         // logic
+//     }
+//
+//     removeBookFromCatalog(book: Book): Book {
+//         // logic
+//         return book;
+//     }
+//
+// }
+//
+// interface Product {
+//     name: string;
+// }
+//
+// class ProductShelf {
+//     _products: Product[] = [];
+//
+//     addProductToCatalog(product: Product): void {
+//         // logic
+//     }
+//
+//     removeProductFromCatalog(product: Product): Product {
+//         // logic
+//         return product;
+//     }
+// }
+//
+// class BookItem implements Book {
+//     title = 'Pan Tadeusz';
+// }
+//
+// class ProductItem implements Product {
+//     name = 'cebula';
+// }
+//
+// class Shelf<T> {
+//     _items: T[] = [];
+//
+//     addItemToCatalog(item: T): void {
+//         // logic
+//     }
+//
+//     removeItemFromCatalog(item: T): T {
+//         // logic
+//         return item;
+//     }
+// }
+//
+// const bookShelf: Shelf<Book> = new Shelf<Book>();
+// const productShelf: Shelf<Product> = new Shelf<Product>();
+//
+// bookShelf.addItemToCatalog(new BookItem());
+// productShelf.addItemToCatalog(new ProductItem());
 
 // Functions
 //
 
-function shortenArray<T>(data: Array<T>, amountToShorten: number): Array<T> {
-    return data.splice(amountToShorten, data.length);
-}
-
-const stringArray: string[] = 'Tekst'.split('');
-
-const result = shortenArray<string>(stringArray, 2); // <string> nie jest konieczny,
-                                                                            // ale piszemy dla celów dydaktycznych
-
-// Type constraint for functions
+// function shortenArray<T>(data: Array<T>, amountToShorten: number): Array<T> {
+//     return data.splice(amountToShorten, data.length);
+// }
 //
-
+// const stringArray: string[] = 'Tekst'.split('');
+//
+// const result = shortenArray<string>(stringArray, 2); // <string> nie jest konieczny,
+// // ale piszemy dla celów dydaktycznych
+//
+// // Type constraint for functions
+// //
+//
 interface MeetingResource {
     name: string;
     capacity: number;
@@ -123,17 +123,17 @@ interface Building {
 }
 
 const buildingData: Building[] = [
-    { address: 'Main Street', numberOfFloors: 10 },
-    { address: 'Central Avenue', numberOfFloors: 2 },
-    { address: 'Curious Way', numberOfFloors: 1 },
-    { address: 'Circle Drive', numberOfFloors: 4 },
+    {address: 'Main Street', numberOfFloors: 10},
+    {address: 'Central Avenue', numberOfFloors: 2},
+    {address: 'Curious Way', numberOfFloors: 1},
+    {address: 'Circle Drive', numberOfFloors: 4},
 ];
 
 function getBigRooms<T extends MeetingResource>(rooms: Array<T>, minSize: number): Array<T> {
     const bigRooms: Array<T> = [];
 
-    for (const room of rooms){
-        if(room.capacity >= minSize){
+    for (const room of rooms) {
+        if (room.capacity >= minSize) {
             bigRooms.push(room);
         }
     }
@@ -146,6 +146,73 @@ const bigRooms: ConferenceRoom[] = getBigRooms<ConferenceRoom>(conferenceRoomDat
 // arrow function example:
 let getLargeRooms: <T extends MeetingResource>(rooms: T[], minSize: number) => T[];
 
-getLargeRooms = function (r, m){
+getLargeRooms = function (r, m) {
     return r;
 }
+
+interface DataStructure<T> {
+    add(item: T): void;
+
+    remove(): T | undefined;
+}
+
+// Stack: LIFO - last in, first out
+class Stack<T> implements DataStructure<T> {
+    items: T[] = [];
+
+    add(item: T): void {
+        this.items.push(item);
+    }
+
+    remove(): T | undefined {
+        return this.items.pop();
+    }
+
+    peek(): T | undefined {
+        return this.items.at(-1);
+    }
+}
+
+const stack: Stack<number> = new Stack<number>();
+
+stack.add(2);
+stack.add(4);
+stack.add(5);
+// console.log(stack);
+// console.log(stack.remove());
+// console.log(stack.peek());
+
+// queue - FIFO: first in - first out
+
+class Queue<T> implements DataStructure<T> {
+    items: T[] = [];
+
+    add(item: T): void {
+        this.items.push(item);
+    }
+
+    remove(): T | undefined {
+        return this.items.shift();
+    }
+
+    peek(): T | undefined {
+        return this.items[0];
+    }
+}
+
+// Type constraint for classes
+//
+
+class Reservation<T extends MeetingResource> {
+    constructor(private resource: T, private organizerName: string) {
+    }
+
+    requestResource(requestResource: T, requester: string): void {
+        this.resource = requestResource;
+        this.organizerName = requester;
+        console.log(`${requester} requested reservation form for ${requestResource.name}`);
+    }
+}
+
+const reservation: Reservation<ConferenceRoom> = new Reservation<ConferenceRoom>(conferenceRoomData[0], 'Johnny B. Goode');
+reservation.requestResource(conferenceRoomData[2], 'Chuck Berry');
